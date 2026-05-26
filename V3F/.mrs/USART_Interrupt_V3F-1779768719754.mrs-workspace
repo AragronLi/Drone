@@ -1,0 +1,27 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "USART_Interrupt_V3F",
+			"path": "d:\\CH32H417\\EVT\\EXAM\\USART\\USART_Interrupt\\V3F"
+		}
+	],
+	"settings": {
+		"mrs.workspace.type": "project",
+		"mrs.init.arg": "45d5eda6f7444320b692c0fd7daba7ff",
+		"files.associations": {
+			"*.c": "c",
+			"*.h": "cpp",
+			"*.hxx": "cpp",
+			"*.hpp": "cpp",
+			"*.c++": "cpp",
+			"*.cpp": "cpp",
+			"*.cxx": "cpp",
+			"*.cc": "cpp",
+			"*.hh": "cpp",
+			"*.h++": "cpp"
+		}
+	}
+}

@@ -1,0 +1,38 @@
+CODE SEGMENT
+    ASSUME CS:CODE
+
+START:
+    MOV AL, 80H
+    MOV DX, 283H
+    OUT DX, AL
+
+BB:
+    MOV CX, 16
+    MOV AL, 0
+
+AA:
+    MOV DX, 280H
+    OUT DX, AL
+    CALL DELAY
+    INC AL
+    LOOP AA
+    JMP BB
+
+    MOV AH, 4CH
+    INT 21H
+
+DELAY PROC NEAR
+    PUSH BX
+    PUSH CX
+    MOV BX, 5F6H
+D1: MOV CX, 0FFFFH
+D2: LOOP D2
+    DEC BX
+    JNZ D1
+    POP CX
+    POP BX
+    RET
+DELAY ENDP
+
+CODE ENDS
+    END START

@@ -1,0 +1,33 @@
+{
+    "configurations": [
+        {
+            "name": "CH32H417 V3F",
+            "includePath": [
+                "${workspaceFolder}/Common",
+                "${workspaceFolder}/V3F/User",
+                "${workspaceFolder}/V3F/Driver",
+                "d:/CH32H417/EVT/EXAM/SRC/Debug",
+                "d:/CH32H417/EVT/EXAM/SRC/Core",
+                "d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc",
+                "d:/CH32H417/EVT/EXAM/SRC/Peripheral/src"
+            ],
+            "defines": [
+                "Core_V3F"
+            ],
+            "cStandard": "c99",
+            "intelliSenseMode": "linux-gcc-x86",
+            "compilerPath": "",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/Common",
+                    "${workspaceFolder}/V3F/User",
+                    "${workspaceFolder}/V3F/Driver",
+                    "d:/CH32H417/EVT/EXAM/SRC/Debug",
+                    "d:/CH32H417/EVT/EXAM/SRC/Core",
+                    "d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}
