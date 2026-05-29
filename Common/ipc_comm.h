@@ -30,6 +30,10 @@ typedef struct {
     float    accel_z;
     float    tof_altitude_m;
     uint8_t  tof_confidence;
+    float    flow_dx;          /* 光流 X 位移 (cm) */
+    float    flow_dy;          /* 光流 Y 位移 (cm) */
+    uint8_t  flow_quality;     /* squal 表面质量 0~255 */
+    uint8_t  flow_updated;     /* 光流数据是否更新 */
     uint32_t heartbeat_ms;
 } ipc_sensor_data_t;
 
@@ -44,12 +48,13 @@ typedef struct {
 
 /* ---- IPC MSG 打包格式 ---- */
 
-/* CH0 MSG (V3F→V5F): 分 4 帧轮流发送传感器子集
+/* CH0 MSG (V3F→V5F): 分 5 帧轮流发送传感器子集
  * MSG3 = heartbeat_ms[23:0] | (frame_id << 24) */
 #define IPC_CH0_FRAME_ATTITUDE   0   /* roll/pitch/yaw + heartbeat */
 #define IPC_CH0_FRAME_GYRO       1   /* gyro_x/y/z + heartbeat */
 #define IPC_CH0_FRAME_ACCEL      2   /* accel_x/y/z + heartbeat */
 #define IPC_CH0_FRAME_TOF        3   /* tof_altitude_m + confidence + heartbeat */
+#define IPC_CH0_FRAME_FLOW       4   /* flow_dx + flow_dy + quality + updated + heartbeat */
 
 /* ---- API ---- */
 void ipc_comm_init(void);

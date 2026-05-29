@@ -10,10 +10,12 @@
 * microcontroller manufactured by Nanjing Qinheng Microelectronics.
 *******************************************************************************/
 #include "ch32h417_it.h"
+#include "comm_lora.h"
 
 void NMI_Handler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void HardFault_Handler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void IPC_CH0_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+void USART7_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
 /*********************************************************************
  * @fn      NMI_Handler
@@ -56,4 +58,11 @@ void IPC_CH0_IRQHandler(void)
   }
 }
 
-
+/*********************************************************************
+ * @fn      USART7_IRQHandler
+ * @brief   ATK LoRa 数传 USART7 中断入口, 转发到驱动层处理
+ */
+void USART7_IRQHandler(void)
+{
+    COMM_LORA_UART_IRQHandler();
+}

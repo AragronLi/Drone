@@ -119,6 +119,12 @@ void ipc_v3f_send_sensor_frame(uint8_t frame_id,
         IPC_WriteMSG(IPC_MSG2, 0);
         IPC_WriteMSG(IPC_MSG3, (data->heartbeat_ms & 0x00FFFFFF) | ((uint32_t)frame_id << 24));
         break;
+    case IPC_CH0_FRAME_FLOW:
+        IPC_WriteMSG(IPC_MSG0, *(uint32_t *)&data->flow_dx);
+        IPC_WriteMSG(IPC_MSG1, *(uint32_t *)&data->flow_dy);
+        IPC_WriteMSG(IPC_MSG2, data->flow_quality | ((uint32_t)data->flow_updated << 8));
+        IPC_WriteMSG(IPC_MSG3, (data->heartbeat_ms & 0x00FFFFFF) | ((uint32_t)frame_id << 24));
+        break;
     }
 
     /* 通知 V5F: 数据就绪 */
@@ -165,6 +171,12 @@ void ipc_v5f_recv_sensor_frame(uint8_t *frame_id,
     case IPC_CH0_FRAME_TOF:
         data->tof_altitude_m = *(float *)&m0;
         data->tof_confidence  = (uint8_t)m1;
+        break;
+    case IPC_CH0_FRAME_FLOW:
+        data->flow_dx       = *(float *)&m0;
+        data->flow_dy       = *(float *)&m1;
+        data->flow_quality  = (uint8_t)(m2 & 0xFF);
+        data->flow_updated  = (uint8_t)((m2 >> 8) & 0xFF);
         break;
     }
 
