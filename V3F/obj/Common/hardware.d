@@ -53,7 +53,11 @@ Common/hardware.o: \
  d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/atk_ms901m.h \
  d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/atk_ms901m_uart.h \
  d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/bsp_esc_pwm.h \
- d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/bsp_tof_tfmini.h
+ d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/bsp_tof_tfmini.h \
+ d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/sensor_flow.h \
+ d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/sensor_gps.h \
+ d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/sensor_compass.h \
+ d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/oled_ssd1306.h
 d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/Common/hardware.h:
 d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417.h:
 d:/CH32H417/EVT/EXAM/SRC/Core/core_riscv.h:
@@ -108,3 +112,7 @@ d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/atk_ms901m.h:
 d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/atk_ms901m_uart.h:
 d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/bsp_esc_pwm.h:
 d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/bsp_tof_tfmini.h:
+d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/sensor_flow.h:
+d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/sensor_gps.h:
+d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/sensor_compass.h:
+d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V3F/Driver/oled_ssd1306.h:

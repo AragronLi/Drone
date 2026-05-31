@@ -4,7 +4,7 @@
  *                       接口: SPI3 (PB3/SCK, PB4/MISO, PB5/MOSI, PC5/CS)
  *                       速率: ~2MHz, 100Hz 轮询
  *
- * 高度来源: TFmini 下视 TOF (USART4), 不使用 VL53LXX
+ * 高度来源: TFmini 下视 TOF (USART6/PC11), 不使用 VL53LXX
  * 参考: ATK-PMW3901 光流模块用户手册
  *******************************************************************************/
 #ifndef __SENSOR_FLOW_H

@@ -49,6 +49,9 @@ Common/hardware.o: \
  d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_usbpd.h \
  d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_usb.h \
  d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_pioc.h \
+ d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/Common/ipc_comm.h \
+ d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V5F/Driver/comm_lora.h \
+ d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V5F/Driver/comm_mavlink.h \
  d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/Common/ipc_comm.h
 d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/Common/hardware.h:
 d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417.h:
@@ -99,4 +102,7 @@ d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_wwdg.h:
 d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_usbpd.h:
 d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_usb.h:
 d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_pioc.h:
+d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/Common/ipc_comm.h:
+d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V5F/Driver/comm_lora.h:
+d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V5F/Driver/comm_mavlink.h:
 d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/Common/ipc_comm.h:

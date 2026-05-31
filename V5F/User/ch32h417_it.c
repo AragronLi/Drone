@@ -15,7 +15,7 @@
 void NMI_Handler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void HardFault_Handler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void IPC_CH0_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void USART7_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+void USART8_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
 /*********************************************************************
  * @fn      NMI_Handler
@@ -59,10 +59,10 @@ void IPC_CH0_IRQHandler(void)
 }
 
 /*********************************************************************
- * @fn      USART7_IRQHandler
- * @brief   ATK LoRa 数传 USART7 中断入口, 转发到驱动层处理
+ * @fn      USART8_IRQHandler
+ * @brief   ATK LoRa 数传 USART8 中断入口, 转发到驱动层处理
  */
-void USART7_IRQHandler(void)
+void USART8_IRQHandler(void)
 {
     COMM_LORA_UART_IRQHandler();
 }

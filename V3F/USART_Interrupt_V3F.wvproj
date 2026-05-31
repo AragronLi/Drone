@@ -57,7 +57,7 @@
 			"kernelName": "V3F",
 			"isMaster": true,
 			"debugOptions": {
-				"dualCoreDebug": true,
+				"dualCoreDebug": false,
 				"slaveGDBPort": 3334,
 				"masterGDBPort": 3333
 			},
@@ -383,7 +383,7 @@
 		"target_path": "obj/USART_Interrupt_V3F.hex",
 		"clkSpeed": "High",
 		"debug_interface_mode": "1-wire serial",
-		"erase": false,
+		"erase": true,
 		"program": true,
 		"verify": true,
 		"reset": true,

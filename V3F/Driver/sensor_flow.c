@@ -144,36 +144,33 @@ void sensor_flow_init(void)
     RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOB | RCC_HB2Periph_GPIOC, ENABLE);
     RCC_HB1PeriphClockCmd(FLOW_SPI_CLK, ENABLE);
 
-    /* ---- 2. 禁用 JTAG, 释放 PB3/PB4 ---- */
-    GPIO_PinRemapConfig(GPIO_Remap_SWJ_Disable, ENABLE);
-
-    /* ---- 3. PB3 = SPI3_SCK (AF6, AF_PP) ---- */
+    /* ---- 2. PB3 = SPI3_SCK (AF6, AF_PP) ---- */
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource3, FLOW_GPIO_AF);
     GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-    /* ---- 4. PB4 = SPI3_MISO (AF6, IN_FLOATING) ---- */
+    /* ---- 3. PB4 = SPI3_MISO (AF6, IN_FLOATING) ---- */
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource4, FLOW_GPIO_AF);
     GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_4;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN_FLOATING;
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-    /* ---- 5. PB5 = SPI3_MOSI (AF6, AF_PP) ---- */
+    /* ---- 4. PB5 = SPI3_MOSI (AF6, AF_PP) ---- */
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource5, FLOW_GPIO_AF);
     GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_5;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-    /* ---- 6. PC5 = CS (OUT_PP, 初始高) ---- */
+    /* ---- 5. PC5 = CS (OUT_PP, 初始高) ---- */
     GPIO_InitStructure.GPIO_Pin   = FLOW_CS_PIN;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
     GPIO_Init(FLOW_CS_PORT, &GPIO_InitStructure);
     CS_HIGH();
 
-    /* ---- 7. SPI3 初始化 (Mode3, 全双工主, 8bit, ~2MHz) ---- */
+    /* ---- 6. SPI3 初始化 (Mode3, 全双工主, 8bit, ~2MHz) ---- */
     SPI_InitStructure.SPI_Direction         = SPI_Direction_2Lines_FullDuplex;
     SPI_InitStructure.SPI_Mode              = SPI_Mode_Master;
     SPI_InitStructure.SPI_DataSize          = SPI_DataSize_8b;
@@ -187,17 +184,17 @@ void sensor_flow_init(void)
 
     SPI_Cmd(FLOW_SPI, ENABLE);
 
-    /* ---- 8. PMW3901 上电复位 ---- */
+    /* ---- 7. PMW3901 上电复位 ---- */
     CS_HIGH();
     Delay_Ms(50);
     registerWrite(PMW3901_REG_POWER_UP_RESET, 0x5A);
     Delay_Ms(5);
 
-    /* ---- 9. 寄存器初始化 ---- */
+    /* ---- 8. 寄存器初始化 ---- */
     InitRegisters();
     Delay_Ms(5);
 
-    /* ---- 10. 验证 Chip ID ---- */
+    /* ---- 9. 验证 Chip ID ---- */
     uint8_t chipId    = registerRead(PMW3901_REG_PRODUCT_ID);
     uint8_t invChipId = registerRead(PMW3901_REG_INV_PRODUCT_ID);
     printf("[FLOW] PMW3901 Product_ID=0x%02X Inv_ID=0x%02X\r\n", chipId, invChipId);

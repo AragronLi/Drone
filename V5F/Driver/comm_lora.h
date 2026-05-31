@@ -1,7 +1,7 @@
 /********************************** (C) COPYRIGHT  *******************************
  * 文件名              : comm_lora.h
- * 描述                : ATK LoRa 数传模块 USART7 驱动头文件
- *                      USART7: PE8(TX) + PE7(RX), AF7, HB1 总线
+ * 描述                : ATK LoRa 数传模块 USART8 驱动头文件
+ *                      USART8: PE8(TX) + PE7(RX), AF7, HB1 总线
  *                      波特率 115200, 8N1
  *******************************************************************************/
 
@@ -10,9 +10,9 @@
 
 #include "ch32h417.h"
 
-/* ---- USART7 引脚映射 ---- */
-#define COMM_LORA_UART              USART7
-#define COMM_LORA_UART_IRQn         USART7_IRQn
+/* ---- USART8 引脚映射 ---- */
+#define COMM_LORA_UART              USART8
+#define COMM_LORA_UART_IRQn         USART8_IRQn
 
 #define COMM_LORA_UART_TX_PORT      GPIOE
 #define COMM_LORA_UART_TX_PIN       GPIO_Pin_8

@@ -125,6 +125,36 @@ void ipc_v3f_send_sensor_frame(uint8_t frame_id,
         IPC_WriteMSG(IPC_MSG2, data->flow_quality | ((uint32_t)data->flow_updated << 8));
         IPC_WriteMSG(IPC_MSG3, (data->heartbeat_ms & 0x00FFFFFF) | ((uint32_t)frame_id << 24));
         break;
+    case IPC_CH0_FRAME_GPS_POS:
+        IPC_WriteMSG(IPC_MSG0, (uint32_t)data->gps_latitude_deg_e7);
+        IPC_WriteMSG(IPC_MSG1, (uint32_t)data->gps_longitude_deg_e7);
+        IPC_WriteMSG(IPC_MSG2, (uint32_t)data->gps_altitude_mm);
+        IPC_WriteMSG(IPC_MSG3, (data->heartbeat_ms & 0x00FFFFFF) | ((uint32_t)frame_id << 24));
+        break;
+    case IPC_CH0_FRAME_GPS_STAT:
+        IPC_WriteMSG(IPC_MSG0, data->gps_fix_valid |
+                               ((uint32_t)data->gps_fix_quality << 8) |
+                               ((uint32_t)data->gps_fix_type << 16) |
+                               ((uint32_t)data->gps_satellites_used << 24));
+        IPC_WriteMSG(IPC_MSG1, data->gps_satellites_visible |
+                               ((uint32_t)data->gps_hdop_x100 << 16));
+        IPC_WriteMSG(IPC_MSG2, 0);
+        IPC_WriteMSG(IPC_MSG3, (data->heartbeat_ms & 0x00FFFFFF) | ((uint32_t)frame_id << 24));
+        break;
+    case IPC_CH0_FRAME_GPS_VEL:
+        IPC_WriteMSG(IPC_MSG0, data->gps_speed_cms);
+        IPC_WriteMSG(IPC_MSG1, data->gps_course_deg_x100);
+        IPC_WriteMSG(IPC_MSG2, 0);
+        IPC_WriteMSG(IPC_MSG3, (data->heartbeat_ms & 0x00FFFFFF) | ((uint32_t)frame_id << 24));
+        break;
+    case IPC_CH0_FRAME_COMPASS:
+        IPC_WriteMSG(IPC_MSG0, ((uint16_t)data->compass_mag_x) |
+                               ((uint32_t)(uint16_t)data->compass_mag_y << 16));
+        IPC_WriteMSG(IPC_MSG1, ((uint16_t)data->compass_mag_z) |
+                               ((uint32_t)data->compass_heading_deg_x100 << 16));
+        IPC_WriteMSG(IPC_MSG2, data->compass_status);
+        IPC_WriteMSG(IPC_MSG3, (data->heartbeat_ms & 0x00FFFFFF) | ((uint32_t)frame_id << 24));
+        break;
     }
 
     /* 通知 V5F: 数据就绪 */
@@ -177,6 +207,30 @@ void ipc_v5f_recv_sensor_frame(uint8_t *frame_id,
         data->flow_dy       = *(float *)&m1;
         data->flow_quality  = (uint8_t)(m2 & 0xFF);
         data->flow_updated  = (uint8_t)((m2 >> 8) & 0xFF);
+        break;
+    case IPC_CH0_FRAME_GPS_POS:
+        data->gps_latitude_deg_e7  = (int32_t)m0;
+        data->gps_longitude_deg_e7 = (int32_t)m1;
+        data->gps_altitude_mm      = (int32_t)m2;
+        break;
+    case IPC_CH0_FRAME_GPS_STAT:
+        data->gps_fix_valid          = (uint8_t)(m0 & 0xFF);
+        data->gps_fix_quality        = (uint8_t)((m0 >> 8) & 0xFF);
+        data->gps_fix_type           = (uint8_t)((m0 >> 16) & 0xFF);
+        data->gps_satellites_used    = (uint8_t)((m0 >> 24) & 0xFF);
+        data->gps_satellites_visible = (uint8_t)(m1 & 0xFF);
+        data->gps_hdop_x100          = (uint16_t)((m1 >> 16) & 0xFFFF);
+        break;
+    case IPC_CH0_FRAME_GPS_VEL:
+        data->gps_speed_cms       = m0;
+        data->gps_course_deg_x100 = (uint16_t)(m1 & 0xFFFF);
+        break;
+    case IPC_CH0_FRAME_COMPASS:
+        data->compass_mag_x             = (int16_t)(m0 & 0xFFFF);
+        data->compass_mag_y             = (int16_t)((m0 >> 16) & 0xFFFF);
+        data->compass_mag_z             = (int16_t)(m1 & 0xFFFF);
+        data->compass_heading_deg_x100  = (uint16_t)((m1 >> 16) & 0xFFFF);
+        data->compass_status            = (uint8_t)(m2 & 0xFF);
         break;
     }
 

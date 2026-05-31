@@ -46,7 +46,8 @@ User/ch32h417_it.o: ../User/ch32h417_it.c ../User/ch32h417_it.h \
  d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_wwdg.h \
  d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_usbpd.h \
  d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_usb.h \
- d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_pioc.h
+ d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_pioc.h \
+ d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V5F/Driver/comm_lora.h
 ../User/ch32h417_it.h:
 d:/CH32H417/EVT/EXAM/SRC/Debug/debug.h:
 d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417.h:
@@ -96,3 +97,4 @@ d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_wwdg.h:
 d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_usbpd.h:
 d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_usb.h:
 d:/CH32H417/EVT/EXAM/SRC/Peripheral/inc/ch32h417_pioc.h:
+d:/CH32H417/EVT/EXAM/USART/USART_Interrupt/V5F/Driver/comm_lora.h:

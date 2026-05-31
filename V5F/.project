@@ -51,6 +51,11 @@
       <type>2</type>
       <location>PARENT-1-PROJECT_LOC/Common</location>
     </link>
+    <link>
+      <name>MAVLink</name>
+      <type>2</type>
+      <location>PARENT-1-PROJECT_LOC/Middleware/MAVLink</location>
+    </link>
   </linkedResources>
   <filteredResources>
     <filter>

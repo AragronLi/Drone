@@ -30,6 +30,7 @@ SUBDIRS := \
 Common \
 Core \
 Debug \
+Driver \
 Peripheral/src \
 Startup \
 User \

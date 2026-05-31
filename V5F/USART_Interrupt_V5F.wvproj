@@ -41,6 +41,10 @@
 			{
 				"name": "Common",
 				"location": "../Common"
+			},
+			{
+				"name": "MAVLink",
+				"location": "../Middleware/MAVLink"
 			}
 		],
 		"removedResources": [
@@ -73,7 +77,7 @@
 						}
 					]
 				},
-				"downloadMerged": false,
+				"downloadMerged": true,
 				"loadMergedBeforeDebug": true,
 				"retainOffsetData": true
 			}
@@ -185,7 +189,9 @@
 							"${project}/Core",
 							"${project}/User",
 							"${project}/Peripheral/inc",
-							"${project}/Common"
+							"${project}/Common",
+							"${project}/Driver",
+							"${project}/MAVLink"
 						],
 						"include_system_paths": [],
 						"include_files": []
@@ -378,11 +384,11 @@
 	},
 	"flashConfig": {
 		"mcutype": "CH32H417",
-		"address": "0x08010000",
-		"target_path": "obj/USART_Interrupt_V5F.hex",
+		"address": "0x08000000",
+		"target_path": "obj/Merge.Bin",
 		"clkSpeed": "High",
 		"debug_interface_mode": "1-wire serial",
-		"erase": false,
+		"erase": true,
 		"program": true,
 		"verify": true,
 		"reset": true,

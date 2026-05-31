@@ -34,6 +34,25 @@ typedef struct {
     float    flow_dy;          /* 光流 Y 位移 (cm) */
     uint8_t  flow_quality;     /* squal 表面质量 0~255 */
     uint8_t  flow_updated;     /* 光流数据是否更新 */
+
+    uint8_t  gps_fix_valid;
+    uint8_t  gps_fix_quality;
+    uint8_t  gps_fix_type;
+    uint8_t  gps_satellites_used;
+    uint8_t  gps_satellites_visible;
+    int32_t  gps_latitude_deg_e7;
+    int32_t  gps_longitude_deg_e7;
+    int32_t  gps_altitude_mm;
+    uint16_t gps_hdop_x100;
+    uint32_t gps_speed_cms;
+    uint16_t gps_course_deg_x100;
+
+    int16_t  compass_mag_x;
+    int16_t  compass_mag_y;
+    int16_t  compass_mag_z;
+    uint16_t compass_heading_deg_x100;
+    uint8_t  compass_status;
+
     uint32_t heartbeat_ms;
 } ipc_sensor_data_t;
 
@@ -55,6 +74,10 @@ typedef struct {
 #define IPC_CH0_FRAME_ACCEL      2   /* accel_x/y/z + heartbeat */
 #define IPC_CH0_FRAME_TOF        3   /* tof_altitude_m + confidence + heartbeat */
 #define IPC_CH0_FRAME_FLOW       4   /* flow_dx + flow_dy + quality + updated + heartbeat */
+#define IPC_CH0_FRAME_GPS_POS    5   /* lat/lon/alt + heartbeat */
+#define IPC_CH0_FRAME_GPS_STAT   6   /* fix/sats/hdop + heartbeat */
+#define IPC_CH0_FRAME_GPS_VEL    7   /* speed/course + heartbeat */
+#define IPC_CH0_FRAME_COMPASS    8   /* mag/heading + heartbeat */
 
 /* ---- API ---- */
 void ipc_comm_init(void);

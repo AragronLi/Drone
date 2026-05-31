@@ -19,8 +19,8 @@
 #define TELEM_SLOT_ATTITUDE     1   /* ~12.5Hz */
 #define TELEM_SLOT_IMU          2   /* ~12.5Hz */
 #define TELEM_SLOT_ALTITUDE     3   /* ~12.5Hz */
-#define TELEM_SLOT_ATTITUDE2    4   /* 第二轮姿态 */
-#define TELEM_SLOT_IMU2         5   /* 第二轮IMU */
+#define TELEM_SLOT_GPS_RAW      4   /* GPS_RAW_INT */
+#define TELEM_SLOT_GLOBAL_POS   5   /* GLOBAL_POSITION_INT */
 #define TELEM_SLOT_SYS_STATUS   6   /* ~12.5Hz */
 #define TELEM_SLOT_BATTERY      7   /* ~12.5Hz */
 #define TELEM_NUM_SLOTS         8

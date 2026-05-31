@@ -12,6 +12,7 @@
 #include "minimal/mavlink_msg_heartbeat.h"
 
 #include <limits.h>
+#include <string.h>
 
 /* ---- MAVLink 通道状态 (channel 0) ---- */
 static mavlink_status_t g_mavlink_status;
@@ -82,7 +83,6 @@ void comm_mavlink_send_telemetry(uint8_t slot, const ipc_sensor_data_t *sensor,
     }
 
     case TELEM_SLOT_ATTITUDE:
-    case TELEM_SLOT_ATTITUDE2:
         mavlink_msg_attitude_pack(MAVLINK_SYS_ID, MAVLINK_COMP_ID, &g_mavlink_msg,
             g_boot_ms,
             sensor->euler_roll,
@@ -95,7 +95,6 @@ void comm_mavlink_send_telemetry(uint8_t slot, const ipc_sensor_data_t *sensor,
         break;
 
     case TELEM_SLOT_IMU:
-    case TELEM_SLOT_IMU2:
         /* RAW_IMU: accel in mG (milli-G), gyro in mrad/s */
         mavlink_msg_raw_imu_pack(MAVLINK_SYS_ID, MAVLINK_COMP_ID, &g_mavlink_msg,
             (uint64_t)g_boot_ms * 1000,  /* time_usec */
@@ -124,16 +123,57 @@ void comm_mavlink_send_telemetry(uint8_t slot, const ipc_sensor_data_t *sensor,
         len = mavlink_msg_to_send_buffer(buf, &g_mavlink_msg);
         break;
 
+    case TELEM_SLOT_GPS_RAW:
+        mavlink_msg_gps_raw_int_pack(MAVLINK_SYS_ID, MAVLINK_COMP_ID, &g_mavlink_msg,
+            (uint64_t)g_boot_ms * 1000,
+            sensor->gps_fix_valid ? GPS_FIX_TYPE_3D_FIX : GPS_FIX_TYPE_NO_GPS,
+            sensor->gps_latitude_deg_e7,
+            sensor->gps_longitude_deg_e7,
+            sensor->gps_altitude_mm,
+            sensor->gps_hdop_x100,
+            UINT16_MAX,
+            (uint16_t)sensor->gps_speed_cms,
+            sensor->gps_course_deg_x100,
+            sensor->gps_satellites_visible,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0);
+        len = mavlink_msg_to_send_buffer(buf, &g_mavlink_msg);
+        break;
+
+    case TELEM_SLOT_GLOBAL_POS:
+        mavlink_msg_global_position_int_pack(MAVLINK_SYS_ID, MAVLINK_COMP_ID, &g_mavlink_msg,
+            g_boot_ms,
+            sensor->gps_latitude_deg_e7,
+            sensor->gps_longitude_deg_e7,
+            sensor->gps_altitude_mm,
+            sensor->gps_altitude_mm,
+            0,
+            0,
+            0,
+            sensor->compass_heading_deg_x100);
+        len = mavlink_msg_to_send_buffer(buf, &g_mavlink_msg);
+        break;
+
     case TELEM_SLOT_SYS_STATUS:
         /* SYS_STATUS: 传感器状态 + 电池 (预留, 电池参数填 0) */
         mavlink_msg_sys_status_pack(MAVLINK_SYS_ID, MAVLINK_COMP_ID, &g_mavlink_msg,
             MAV_SYS_STATUS_SENSOR_3D_GYRO |
             MAV_SYS_STATUS_SENSOR_3D_ACCEL |
+            MAV_SYS_STATUS_SENSOR_3D_MAG |
+            MAV_SYS_STATUS_SENSOR_GPS |
             MAV_SYS_STATUS_SENSOR_ABSOLUTE_PRESSURE,  /* onboard_control_sensors_present */
             MAV_SYS_STATUS_SENSOR_3D_GYRO |
-            MAV_SYS_STATUS_SENSOR_3D_ACCEL,           /* onboard_control_sensors_enabled */
+            MAV_SYS_STATUS_SENSOR_3D_ACCEL |
+            MAV_SYS_STATUS_SENSOR_3D_MAG |
+            MAV_SYS_STATUS_SENSOR_GPS,                /* onboard_control_sensors_enabled */
             MAV_SYS_STATUS_SENSOR_3D_GYRO |
-            MAV_SYS_STATUS_SENSOR_3D_ACCEL,           /* onboard_control_sensors_health */
+            MAV_SYS_STATUS_SENSOR_3D_ACCEL |
+            ((sensor->compass_status & 0x01) ? MAV_SYS_STATUS_SENSOR_3D_MAG : 0) |
+            (sensor->gps_fix_valid ? MAV_SYS_STATUS_SENSOR_GPS : 0), /* onboard_control_sensors_health */
             0,       /* load (0.1%) */
             0,       /* voltage_battery (mV) — 待 ADC 驱动实现后填充 */
             -1,      /* current_battery (10mA), -1=unknown */

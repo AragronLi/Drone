@@ -1,8 +1,12 @@
 # 地面站 MAVLink 通信 — 实施方案文档
 
+> **串口分配最终确认（2026-05-31）**
+> 本项目硬件分配最终以此为准：USART1=Debug(PB6/PB7)、USART2=接收机(PA3)、USART3=陀螺仪(PB10/PB11)、USART4=GPS(PC6/PC7)、USART5=PF5/PE0空闲、USART6=下视激光(PC10/PC11)、USART7=前视激光(PC12/PD2)、USART8=数传(PE8/PE7)、I2C3=罗盘(PA14=SCL/PA13=SDA)。
+
+
 ## 一、概述
 
-基于 CH32H417 双核飞控，通过 ATK LoRa 数传模块（USART7, PE7/PE8, 115200 8N1）实现飞控与 PC 地面站之间的 **MAVLink v2** 双向通信。
+基于 CH32H417 双核飞控，通过 数传模块（USART7, PE7/PE8, 115200 8N1）实现飞控与 PC 地面站之间的 **MAVLink v2** 双向通信。
 
 使用标准 MAVLink 协议，地面站可直接兼容 **QGroundControl**、**Mission Planner** 等现有地面站软件。
 
@@ -10,10 +14,10 @@
 PC 地面站 (Python + tkinter + pymavlink)
     │ USB-TTL (COM 口)
     ▼
-ATK LoRa 数传 (地面端, USB-TTL)
+数传 (地面端, USB-TTL)
     ║ 433MHz 无线
     ▼
-ATK LoRa 数传 (机载端, J7: PE7/PE8)
+数传 (机载端, J7: PE7/PE8)
     │ USART7 (115200 8N1)
     ▼
 CH32H417 V5F 核心 (MAVLink v2 C 库)
@@ -21,6 +25,21 @@ CH32H417 V5F 核心 (MAVLink v2 C 库)
     ▼
 V3F 核心 → IMU/TOF/光流/ESC PWM
 ```
+
+---
+
+### 串口分配最终表
+
+| 串口 | 功能 | 引脚分配 | 说明 |
+|------|------|----------|------|
+| USART1 | Debug 调试串口 | PB6/PB7 | 115200，调试输出 |
+| USART2 | 接收机 | PA3 | 115200，单线 RX |
+| USART3 | 陀螺仪/IMU | PB10/PB11 | 460800，姿态/角速度/加速度 |
+| USART4 | GPS | PC6/PC7 | 38400（默认），NMEA |
+| USART5 | 空闲/预留 | PF5/PE0 | 当前不接外设 |
+| USART6 | 下视激光 | PC10/PC11 | 115200，定高测距 |
+| USART7 | 前视激光 | PC12/PD2 | 115200，前向避障 |
+| USART8 | 数传 | PE8/PE7 | 115200，地面站/MAVLink |
 
 ---
 
@@ -46,8 +65,8 @@ V3F 核心 → IMU/TOF/光流/ESC PWM
 
 | 文件 | 说明 |
 |------|------|
-| `V5F/Driver/comm_lora.h` | USART7 LoRa 驱动头文件 |
-| `V5F/Driver/comm_lora.c` | USART7 驱动实现 (FIFO + RXNE 中断) |
+| `V5F/Driver/comm_lora.h` | USART8 数传驱动头文件 |
+| `V5F/Driver/comm_lora.c` | USART8 驱动实现 (FIFO + RXNE 中断) |
 | `V5F/Driver/comm_mavlink.h` | MAVLink 通信层头文件 |
 | `V5F/Driver/comm_mavlink.c` | MAVLink 遥测发送 + 命令接收实现 |
 
@@ -84,7 +103,7 @@ V3F 核心 → IMU/TOF/光流/ESC PWM
 |------|------|------|
 | L19-21 | `+ #include "comm_lora.h"` `"comm_mavlink.h"` | 引入数传和 MAVLink 驱动 |
 | L151-152 | `+ #define ESC_PWM_MIN_US / IDLE_US` | 本地 PWM 常量 (V5F 无法访问 V3F 驱动头文件) |
-| L167-173 | `+ comm_lora_init / comm_mavlink_init` | 初始化 LoRa USART7 和 MAVLink 通信层 |
+| L167-173 | `+ comm_lora_init / comm_mavlink_init` | 初始化 数传 USART8 和 MAVLink 通信层 |
 | L179-180 | `+ arm_state / flight_mode 变量` | 飞控状态机变量 |
 | L194 | `+ 精简调试打印` | 只保留 Attitude 和 TOF 帧打印 |
 | L199-203 | `+ 遥测轮转发送` | 每 10ms 发送一帧 MAVLink 遥测 |
@@ -96,7 +115,7 @@ V3F 核心 → IMU/TOF/光流/ESC PWM
 
 | 位置 | 改动 | 说明 |
 |------|------|------|
-| L13 | `+ #include "comm_lora.h"` | 引入 LoRa 驱动中断处理函数声明 |
+| L13 | `+ #include "comm_lora.h"` | 引入 数传 驱动中断处理函数声明 |
 | L18 | `+ USART7_IRQHandler 声明` | WCH 快速中断属性声明 |
 | L61-68 | `+ USART7_IRQHandler 实现` | 中断入口, 转发到 `COMM_LORA_UART_IRQHandler()` |
 
@@ -146,7 +165,7 @@ STX  LEN  INCOMPAT_FLAGS  COMPAT_FLAGS  SEQ  SYSID  COMPID  MSGID(3B)  PAYLOAD  
 
 ---
 
-## 五、USART7 驱动说明
+## 五、USART8 驱动说明
 
 ### 5.1 引脚映射
 
@@ -269,8 +288,8 @@ python gcs_main.py
 
 ### 7.5 操作流程
 
-1. USB-TTL 模块插入 PC, 另一端接 ATK LoRa 模块 (地面端)
-2. 飞控上电, 机载 ATK LoRa 模块自动连接
+1. USB-TTL 模块插入 PC, 另一端接 数传 模块 (地面端)
+2. 飞控上电, 机载 数传 模块自动连接
 3. 点击 **刷新** 扫描串口, 选择对应 COM 口
 4. 波特率选择 **115200**, 点击 **连接**
 5. 连接成功: 状态灯变绿, 心跳计数开始, 姿态/波形实时更新
@@ -313,7 +332,7 @@ V5F 主循环 (~1kHz)
   ├── ARM 解锁 → conn.mav.command_long_send(MAV_CMD_COMPONENT_ARM_DISARM, param1=1)
   └── 模式切换 → conn.mav.set_mode_send(base_mode, custom_mode)
        │
-       ▼ pymavlink → 串口 → USB-TTL → LoRa 无线
+       ▼ pymavlink → 串口 → USB-TTL → 数传 无线
        │
 V5F USART7 RX 中断
   ├── COMM_LORA_UART_IRQHandler()   → FIFO 写入
@@ -403,7 +422,7 @@ MAX_POINTS = 600  # 最大数据点数
 
 ### 11.2 地面站调试
 
-- 先用 USB-TTL 直连飞控 USART7 (不经 LoRa) 验证有线通信
+- 先用 USB-TTL 直连飞控 USART8 (不经 数传) 验证有线通信
 - 确认串口助手中能看到 `0xFD` 开头的 MAVLink 帧后再启动地面站
 - 地面站控制台 (stdout) 会打印连接/接收错误信息
 
@@ -414,7 +433,7 @@ MAX_POINTS = 600  # 最大数据点数
 | USART7 无输出 | 时钟未使能 | 检查 RCC_HB1Periph_USART7 / RCC_HB2Periph_GPIOE |
 | 地面站连不上 | COM 口选错 | 设备管理器确认 USB-TTL 端口号 |
 | 收到帧但无数据显示 | MAVLink SYS_ID 不匹配 | 飞控 SYS_ID=1, 地面站过滤目标 sysid=1 |
-| LoRa 通信断断续续 | 天线未接/波特率不匹配 | 确认两端波特率均为 115200 |
+| 数传 通信断断续续 | 天线未接/波特率不匹配 | 确认两端波特率均为 115200 |
 
 ---
 
@@ -425,4 +444,4 @@ MAX_POINTS = 600  # 最大数据点数
 3. **PID 参数调参**: 实现 `PARAM_REQUEST_LIST (#21)` / `PARAM_SET (#23)`, 实时调整 PID 参数
 4. **SD 卡日志回传**: 通过 `FILE_TRANSFER_PROTOCOL (#110)` 回传飞行日志
 5. **电池电压 ADC 驱动**: 完善 `SYS_STATUS` 和 `BATTERY_STATUS` 中的电压/电流真实数据
-6. **WiFi 链路**: 将 ESP8266 (USART8) 同样接入 MAVLink, 实现双链路冗余
+6. **空闲/预留 链路**: 将 空闲/预留 (USART8) 同样接入 MAVLink, 实现双链路冗余

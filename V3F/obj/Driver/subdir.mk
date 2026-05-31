@@ -8,19 +8,31 @@ C_SRCS += \
 ../Driver/atk_ms901m.c \
 ../Driver/atk_ms901m_uart.c \
 ../Driver/bsp_esc_pwm.c \
-../Driver/bsp_tof_tfmini.c 
+../Driver/bsp_tof_tfmini.c \
+../Driver/oled_ssd1306.c \
+../Driver/sensor_compass.c \
+../Driver/sensor_flow.c \
+../Driver/sensor_gps.c 
 
 C_DEPS += \
 ./Driver/atk_ms901m.d \
 ./Driver/atk_ms901m_uart.d \
 ./Driver/bsp_esc_pwm.d \
-./Driver/bsp_tof_tfmini.d 
+./Driver/bsp_tof_tfmini.d \
+./Driver/oled_ssd1306.d \
+./Driver/sensor_compass.d \
+./Driver/sensor_flow.d \
+./Driver/sensor_gps.d 
 
 OBJS += \
 ./Driver/atk_ms901m.o \
 ./Driver/atk_ms901m_uart.o \
 ./Driver/bsp_esc_pwm.o \
-./Driver/bsp_tof_tfmini.o 
+./Driver/bsp_tof_tfmini.o \
+./Driver/oled_ssd1306.o \
+./Driver/sensor_compass.o \
+./Driver/sensor_flow.o \
+./Driver/sensor_gps.o 
 
 DIR_OBJS += \
 ./Driver/*.o \

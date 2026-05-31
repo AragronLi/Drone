@@ -7,7 +7,7 @@
 			"name": "USART_Interrupt_V3F",
 			"cwd": "d:\\CH32H417\\EVT\\EXAM\\USART\\USART_Interrupt\\V3F",
 			"openOCDCfg": {
-				"useLocalOpenOCD": false,
+				"useLocalOpenOCD": true,
 				"executable": "d:/MounRiver/MounRiver_Studio2/resources/app/resources/win32/components/WCH/OpenOCD/OpenOCD/bin/openocd.exe",
 				"configOptions": [
 					"-f \"d:/MounRiver/MounRiver_Studio2/resources/app/resources/win32/components/WCH/OpenOCD/OpenOCD/bin/wch-dual-core.cfg\" -c \"chip_id CH32H417\" -c noload"
@@ -33,7 +33,7 @@
 			},
 			"startup": {
 				"initCommands": {
-					"initReset": false,
+					"initReset": true,
 					"initResetType": "init",
 					"armSemihosting": false,
 					"additionalCommands": []
@@ -42,14 +42,10 @@
 					"executableFile": "d:\\CH32H417\\EVT\\EXAM\\USART\\USART_Interrupt\\V3F\\obj\\USART_Interrupt_V3F.elf",
 					"symbolFile": "d:\\CH32H417\\EVT\\EXAM\\USART\\USART_Interrupt\\V3F\\obj\\USART_Interrupt_V3F.elf",
 					"executableFileOffset": 0,
-					"symbolFileOffset": 0,
-					"dualCoreExecutableFiles": [
-						"d:\\CH32H417\\EVT\\EXAM\\USART\\USART_Interrupt\\V3F\\obj\\USART_Interrupt_V3F.elf",
-						"d:\\CH32H417\\EVT\\EXAM\\USART\\USART_Interrupt\\V5F\\obj\\USART_Interrupt_V5F.elf"
-					]
+					"symbolFileOffset": 0
 				},
 				"runCommands": {
-					"runReset": false,
+					"runReset": true,
 					"runResetType": "halt",
 					"additionalCommands": [],
 					"setBreakAt": "BP",
@@ -64,7 +60,7 @@
 				"saveDebugOutputToFile": false,
 				"showDebugOutputTimestamps": true
 			},
-			"isDualCoreDebug": true,
+			"isDualCoreDebug": false,
 			"dualCoreDebugRole": "master",
 			"architecture": "RISC-V"
 		}

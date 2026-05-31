@@ -1,7 +1,7 @@
 /********************************** (C) COPYRIGHT  *******************************
  * 文件名              : comm_lora.c
- * 描述                : ATK LoRa 数传模块 USART7 驱动实现
- *                      USART7: PE8(TX) + PE7(RX), 中断驱动接收 FIFO
+ * 描述                : ATK LoRa 数传模块 USART8 驱动实现
+ *                      USART8: PE8(TX) + PE7(RX), 中断驱动接收 FIFO
  *******************************************************************************/
 
 #include "comm_lora.h"
@@ -16,7 +16,7 @@ static struct {
 
 /*********************************************************************
  * @fn      comm_lora_init
- * @brief   初始化 USART7 用于 ATK LoRa 数传通信
+ * @brief   初始化 USART8 用于 ATK LoRa 数传通信
  * @param   baudrate: 串口波特率 (默认 115200)
  */
 void comm_lora_init(uint32_t baudrate)
@@ -24,24 +24,24 @@ void comm_lora_init(uint32_t baudrate)
     GPIO_InitTypeDef  GPIO_InitStructure  = {0};
     USART_InitTypeDef USART_InitStructure = {0};
 
-    /* 时钟使能: USART7 挂载于 HB1, GPIOE 挂载于 HB2 */
-    RCC_HB1PeriphClockCmd(RCC_HB1Periph_USART7, ENABLE);
+    /* 时钟使能: USART8 挂载于 HB1, GPIOE 挂载于 HB2 */
+    RCC_HB1PeriphClockCmd(RCC_HB1Periph_USART8, ENABLE);
     RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOE, ENABLE);
 
-    /* USART7_TX = PE8, AF7, 复用推挽输出 */
+    /* USART8_TX = PE8, AF7, 复用推挽输出 */
     GPIO_PinAFConfig(COMM_LORA_UART_TX_PORT, COMM_LORA_UART_TX_PIN_SRC, COMM_LORA_UART_GPIO_AF);
     GPIO_InitStructure.GPIO_Pin   = COMM_LORA_UART_TX_PIN;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Very_High;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
     GPIO_Init(COMM_LORA_UART_TX_PORT, &GPIO_InitStructure);
 
-    /* USART7_RX = PE7, AF7, 浮空输入 */
+    /* USART8_RX = PE7, AF7, 浮空输入 */
     GPIO_PinAFConfig(COMM_LORA_UART_RX_PORT, COMM_LORA_UART_RX_PIN_SRC, COMM_LORA_UART_GPIO_AF);
     GPIO_InitStructure.GPIO_Pin  = COMM_LORA_UART_RX_PIN;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
     GPIO_Init(COMM_LORA_UART_RX_PORT, &GPIO_InitStructure);
 
-    /* USART7 参数配置: 8N1 */
+    /* USART8 参数配置: 8N1 */
     USART_InitStructure.USART_BaudRate            = baudrate;
     USART_InitStructure.USART_WordLength          = USART_WordLength_8b;
     USART_InitStructure.USART_StopBits            = USART_StopBits_1;
@@ -64,7 +64,7 @@ void comm_lora_init(uint32_t baudrate)
 
 /*********************************************************************
  * @fn      comm_lora_send_bytes
- * @brief   通过 USART7 阻塞发送字节数组
+ * @brief   通过 USART8 阻塞发送字节数组
  * @param   dat : 数据缓冲区
  *          len : 数据长度
  */
@@ -114,7 +114,7 @@ void comm_lora_flush(void)
 
 /*********************************************************************
  * @fn      COMM_LORA_UART_IRQHandler
- * @brief   USART7 中断处理函数, 由 ch32h417_it.c 中的 USART7_IRQHandler 调用
+ * @brief   USART8 中断处理函数, 由 ch32h417_it.c 中的 USART8_IRQHandler 调用
  *          将接收到的字节写入 RX FIFO
  */
 void COMM_LORA_UART_IRQHandler(void)
